@@ -16,7 +16,7 @@ open class ValidatorTextView: UITextView, ValidatorControl {
     
     open var shouldAllowViolation = false
     open var validateOnFocusLossOnly = false
-    public let validator: Validator
+    public var validator: Validator?
     /// Validator delegate for the text view.
     ///
     /// - SeeAlso: setValidatorDelegate(_:) to set the validator delegate.
@@ -50,7 +50,9 @@ open class ValidatorTextView: UITextView, ValidatorControl {
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("Not implemented.")
+        super.init(coder: aDecoder)
+
+        setup()
     }
     
     deinit {
@@ -120,7 +122,7 @@ internal class ValidatorTextViewResponder: NSObject, UITextViewDelegate {
         let originalString = NSString(string: sourceText!)
         
         let futureString = originalString.replacingCharacters(in: range, with: text)
-        let conditions = validatorTextView.validator.checkConditions(futureString)
+        let conditions = validatorTextView.validator?.checkConditions(futureString)
         
         if let conditions = conditions {
             validatorTextView.validatorTextViewViolatedConditions(conditions)
@@ -154,7 +156,7 @@ internal class ValidatorTextViewResponder: NSObject, UITextViewDelegate {
                 return
         }
         
-        let conditions = validatorTextView.validator.checkConditions(validatorTextView.text)
+        let conditions = validatorTextView.validator?.checkConditions(validatorTextView.text)
         let isValid = conditions == nil
         if lastIsValid != isValid {
             lastIsValid = isValid

@@ -16,7 +16,7 @@ open class ValidatorTextField: UITextField, ValidatorControl {
     
     open var shouldAllowViolation = false
     open var validateOnFocusLossOnly = false
-    public let validator: Validator
+    public var validator: Validator?
     /// Validator delegate for the text field.
     ///
     /// - SeeAlso: `setValidatorDelegate(_:)` to set the validator delegate.
@@ -46,7 +46,9 @@ open class ValidatorTextField: UITextField, ValidatorControl {
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("Not implemented.")
+        super.init(coder: aDecoder)
+
+        setup()
     }
     
     deinit {
@@ -135,7 +137,7 @@ internal class ValidatorTextFieldResponder: NSObject, UITextFieldDelegate {
         
         let inputText = validatorTextField.text
         
-        let conditions = validatorTextField.validator.checkConditions(inputText)
+        let conditions = validatorTextField.validator?.checkConditions(inputText)
         let isValid = conditions == nil
         if lastIsValid != isValid {
             lastIsValid = isValid
@@ -167,7 +169,7 @@ internal class ValidatorTextFieldResponder: NSObject, UITextFieldDelegate {
         let originalString = NSString(string: sourceText)
     
         let futureString = originalString.replacingCharacters(in: range, with: string)
-        let conditions = validatorTextField.validator.checkConditions(futureString)
+        let conditions = validatorTextField.validator?.checkConditions(futureString)
     
         if let conditions = conditions {
             validatorTextField.validatorTextFieldViolatedConditions(conditions)

@@ -20,7 +20,7 @@ public struct FormEntry {
     /// A `Validatable` that contains text to be validated.
     public let validatable: ValidatorControl
     /// A `Validator` to use to validate text from `validatable`.
-    public let validator: Validator
+    public let validator: Validator?
     
     
     // MARK: - Check
@@ -30,7 +30,7 @@ public struct FormEntry {
     - returns: An array of conditions that were violated. If no conditions were violated then `nil` is returned.
     */
     public func checkConditions() -> [Condition]? {
-        return validator.checkConditions(validatable.validatableText)
+        return validator?.checkConditions(validatable.validatableText)
     }
     
 }

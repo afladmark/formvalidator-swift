@@ -12,6 +12,6 @@ import Foundation
 public protocol Validatable {
     
     var validatableText: String? { get }
-    var validator: Validator { get }
+    var validator: Validator? { get }
     
 }
