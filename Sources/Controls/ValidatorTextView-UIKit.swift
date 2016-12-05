@@ -130,10 +130,11 @@ internal class ValidatorTextViewResponder: NSObject, UITextViewDelegate {
             validatorTextView.validatorTextViewSuccededConditions()
         }
         
-        if !validatorTextView.validateOnFocusLossOnly && range.location != 0,
+        if !validatorTextView.validateOnFocusLossOnly, // && range.location != 0,
+            !text.isEmpty, // We always want to be able to delete something. Always.
             let conditions = conditions,
-            (!validatorTextView.shouldAllowViolation || !(conditions.isEmpty || conditions[0].shouldAllowViolation)) {
-                return false
+            (!validatorTextView.shouldAllowViolation || !conditions.filter({ !$0.shouldAllowViolation }).isEmpty) {
+            return false
         }
         
         if let result = delegate?.textView?(validatorTextView, shouldChangeTextIn: range, replacementText: text) {

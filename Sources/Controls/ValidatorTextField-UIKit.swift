@@ -177,9 +177,10 @@ internal class ValidatorTextFieldResponder: NSObject, UITextFieldDelegate {
             validatorTextField.validatorTextFieldSuccededConditions()
         }
     
-        if !validatorTextField.validateOnFocusLossOnly && range.location != 0,
+        if !validatorTextField.validateOnFocusLossOnly, // && range.location != 0,
+            !string.isEmpty, // We always want to be able to delete something. Always.
             let conditions = conditions,
-            (!validatorTextField.shouldAllowViolation || !(conditions.isEmpty || conditions[0].shouldAllowViolation)) {
+            (!validatorTextField.shouldAllowViolation || !conditions.filter({ !$0.shouldAllowViolation }).isEmpty) {
             return false
         }
     
