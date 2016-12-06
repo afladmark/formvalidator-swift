@@ -13,6 +13,8 @@ open class ValidatorTextField: UITextField, ValidatorControl {
     
     
     // MARK: - Properties
+
+    open var localizedDisplayName = ""
     
     open var shouldAllowViolation = false
     open var validateOnFocusLossOnly = false

@@ -57,7 +57,7 @@ public protocol Form {
      Checks the text from each entry in `entries`.
      - returns: An array of conditions that were violated. If no conditions were violated then `nil` is returned.
      */
-    func checkConditions() -> [Condition]?
+    func checkConditions() -> [String: [Condition]]?
     
 }
 
@@ -109,9 +109,13 @@ public extension Form {
     
     // MARK: - Check
     
-    func checkConditions() -> [Condition]? {
-        let violatedConditions = entries.map { $0.checkConditions() }.filter { $0 != nil }.map { $0! }.flatMap { $0 }
-        
+    func checkConditions() -> [String: [Condition]]? {
+        let violatedConditions = entries.map { ($0.validatable.localizedDisplayName, $0.checkConditions()) }.filter { $0.1 != nil }.map { ($0.0, $0.1!) }.reduce([String:[Condition]]()) { (violatedConditions, kvpair) in
+            var violatedConditions = violatedConditions
+            violatedConditions[kvpair.0] = kvpair.1
+            return violatedConditions
+        }
+
         return violatedConditions.isEmpty ? nil : violatedConditions
     }
     

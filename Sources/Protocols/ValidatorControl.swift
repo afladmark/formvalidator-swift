@@ -20,6 +20,8 @@ public protocol ValidatorControlDelegate: AnyObject {
 
 public protocol ValidatorControl: AnyObject, Validatable {
     
+    var localizedDisplayName: String { get set }
+
     var isValid: Bool { get }
     var shouldAllowViolation: Bool { get set }
     var validateOnFocusLossOnly: Bool { get set }
