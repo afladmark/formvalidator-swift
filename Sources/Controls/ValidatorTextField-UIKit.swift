@@ -46,6 +46,12 @@ open class ValidatorTextField: UITextField, ValidatorControl {
         
         setup()
     }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setup()
+    }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
